@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Book</title>
+</head>
+<body>
+<h1>Add a New Book</h1>
+
+<form th:action="@{/add-book}" method="post" th:object="${book}">
+    <div>
+        <label for="title">Book Title:</label>
+        <input type="text" id="title" th:field="*{title}" placeholder="Enter book title"/>
+    </div>
+    <div>
+        <label for="isbn">ISBN:</label>
+        <input type="text" id="isbn" th:field="*{isbn}" placeholder="Enter ISBN"/>
+    </div>
+    <div>
+        <label for="authors">Authors (Hold Ctrl to select multiple):</label>
+        <select id="authors" th:field="*{authors}" multiple="multiple">
+            <option th:each="author : ${allAuthors}"
+                    th:value="${author.id}"
+                    th:text="${author.firstName + ' ' + author.lastName}">Author Name</option>
+        </select>
+    </div>
+    <div>
+        <label for="publisher">Publisher:</label>
+        <select id="publisher" th:field="*{publisher}">
+            <option value="">-- Select Publisher --</option>
+            <option th:each="pub : ${publishers}"
+                    th:value="${pub.id}"
+                    th:text="${pub.publisherName}">Publisher Name</option>
+        </select>
+    </div>
+    <p th:if="${#fields.hasErrors('title')}" th:errors="*{title}" style="color: red;">Eroare titlu</p>
+    <div>
+        <button type="submit">Save Book</button>
+    </div>
+</form>
+
+<br>
+<a th:href="@{/books}">Back to Book List</a>
+</body>
+</html>
